@@ -1,17 +1,22 @@
 # LaraELearn
 AdminLTE x Laravel E-Learning System Script
 
+![Image of Yaktocat](https://github.com/Abdurozzaq/LaraELearn/blob/master/admin-screenshoot-1368x793.png)
+
 Features
+
 User Roles
 Admin, Teacher,
 Student.
 
 Basic Features
+
 Authentication, Course/Mapel, Class/Kelas,
 Upload Theory/Materi (Teacher),
 See Theory/Materi based on Student Class and Course.
 
 User Manager
+
 Create Student, Manage Student Profile,
 Create Teacher,
 Manage Teacher Profile.
