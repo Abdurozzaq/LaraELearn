@@ -1,0 +1,237 @@
+
+// Untuk Student
+
+// 1 Show Mapel
+
+$Mapels = User::with('mata_pelajaran')->get();
+
+$user = Auth::user();
+
+@if ($user->has(where('kelas', {{ $user->kelas }} ))->first()
+    Show
+    foreach
+    {{ $mapels->nama_mapel }}
+    {{ $mapels->pengajar }}
+    {{ $mapels->kelas }}
+
+// 2. Show Materi based on mapel
+Saat di klik salah satu mata pelajaran redirect ke materi dari mata_pelajaran yang di klik
+
+Cara show table jika column pada tabel tersebut punya relationships ke tabel category
+
+
+1. get kelas dari user - jika sudah OKE
+2. get nama mapel dari id
+
+<a href="/Student/Materi/{{ $mapels->id }}" class="btn btn-warning">Show Materi dari mapel ini</a>
+Route::get('/Student/Materi/{id}', 'StudentController@showMateriList');
+
+public function showMateriList($id)
+{
+   $idMapel = mataPelajaran::findOrFail($id);
+   // Sekarang dapet id mapel - lalu dari id mapel dapatkan nama mapel dengan :
+   $namaMapel = mataPelajaran::where('id', '=', $id)->get()->nama_mapel;
+   return view('VIEWNYA', compact('nameMapel', $namaMapel));
+
+   Opsi 1 :
+   // Lanjut sudah dapat nama mapel dari mapel yang di klik,
+        terus ke view untuk show materinya dari/dengan Kelas & Nama Mapel
+
+
+   Opsi 2 :
+   // show materi-materi dari 2 column
+   $kelas = Auth::user()->kelas;
+   $materis = Materi::whereColumn('$kelas', '$namaMapel')
+                ->get();
+ }
+
+32
+public function showSingleMateri($id)
+{
+    $singleMateri = Materi::find($id);
+    return view('VIEWNYA', ['singleMateri' => $singleMateri]);
+}
+
+
+VIEWNYA opsi 1 dari controller
+opsi 1 = Jika user punya kelas dan action punya nama mapel yang di klik, SHOW MATERI.
+
+@if ($user->has(wherein('kelas', {{ $->kelas }} ))->first()
+
+    @if (where('mapel', '=', {{ $namaMapel }}) )->get();
+    Show
+    {{ $materis->judul }}
+    {{ $materis->kelas }}
+    {{ $materis->file }}
+
+
+------------------------------------------------------------------------------------------------
+Contoh mendapatkan row dari 2 column
+
+$products = DB::table('products')
+                ->whereColumn('main_price', '>', 'offer_price')
+                ->get();
+
+
+
+$kelas = User::where('kelas', $user->kelas)->first()->id;
+
+
+
+    $materi = Materi::where('kelas', $kelas)->all();
+
+
+
+
+
+// Input quiz
+
+Exercise - add
+Exercise::create([
+    'mapel' => $request->mapel,
+
+    //Assign the "mutated" kelas value to kelas column
+    'kelas' => collect($request->kelas)->implode(', '),
+
+    'nama_exercise' => $request->nama_exercise,
+    'deskripsi' => $request->deskripsi,
+]);
+
+return view('VIEWNYA', compact('user, mapel, kelas') );
+
+Question - add
+
+$request->validate([
+    'addmoreQuestion.*.exercise' => 'required',
+    'addMoreQuestion.*.question' => 'required',
+    'addMoreQuestion.*.opt1' => 'required',
+    'addMoreQuestion.*.opt2' => 'required',
+    'addMoreQuestion.*.opt3' => 'required',
+    'addMoreQuestion.*.opt4' => 'required',
+]);
+
+foreach ($request->addMoreQuestion as $key => $value) {
+    Question::create($value);
+}
+
+correct opt - add
+$question = Question::all();
+$question->correct_opt => $request->correct_opt;
+$question->save();
+return view('VIEWNYA', compact('user, question,') );
+
+
+
+
+
+
+
+
+
+
+Bagaimana cara mendapatkan question_id?
+
+/**
+ * USER SIDE UNTUK EXERCISE
+ *
+ */
+
+//
+// 1 Show Mapel
+//
+$Mapels = User::with('mata_pelajaran')->get();
+
+$user = Auth::user();
+
+@if ($user->has(where('kelas', {{ $user->kelas }} ))->first()
+    Show
+    foreach
+    {{ $mapels->nama_mapel }}
+    {{ $mapels->pengajar }}
+    {{ $mapels->kelas }}
+
+//
+// 2 Show Exercise berdasarkan mapel dan kelas(dari user details)
+//
+<a href="/Student/Exercise/{{ $mapels->id }}" class="btn btn-warning">Show Exercise dari mapel ini</a>
+public function showExerciseList($id)
+    {
+        $user = Auth::user();
+
+        $mapel = mataPelajaran::findOrFail($id);
+
+        $exercise = Exercise::where('kelas', $user->kelas)->orWhere('mapel', $mapel->nama_mapel)->get();
+
+    	return view('pages.student.materi.showExerciseList', compact('user', 'mapel', 'exercise'));
+    }
+
+//
+// 3 Show Question dari exercise
+//
+<a href="/Student/Exercise/Questions/{{ $q->id }}" class="small-box-footer">Kerjakan Exercise Ini <i class="fas fa-arrow-circle-right"></i></a>
+public function showQuestions($id)
+    {
+        $user = Auth::user();
+
+        $exercise = Exercise::finOrFail($id);
+
+        $questions = Question::where('exercise_id', '=", $id)->get();
+
+        return view('pages.student.materi.showSingleMateri', compact('user', 'singleMateri'));
+    }
+
+
+
+    Response / THe Student Answer
+Materi::create([
+    'question_id' => $id->id,
+    'selected_opt' => $request->answer,
+]);
+return view('VIEWNYA', compact('user') );
+
+
+
+                OR
+
+<input type="hidden" name="correct_opt" value="{{$question->answer}}">
+
+pubic function Questions()
+{
+    Answer:create([
+    'question_id' => $id->id,
+    'student_id' => Auth::user()->id,
+    'selected_opt' => $request->selected_opt,
+    'correct_opt' => $request
+    ]);
+
+    if ($request->input('selected_opt')==$request->input('correct_opt')) {
+        Result::where( 'user_id', Auth::user()->id ) )->increment('score');
+    }
+
+}
+
+<div class="soalsatuan"><div class="form-group row"><label for="input1" class="col-sm-2 col-form-label">Untuk Exercise :</label><div class="col-sm-10"><select name="addMoreQuestion[0][exercise]" class="form-control"> @foreach($exercise as $e) <option value="{{ $e->nama_exercise }}">{{ $e->nama_exercise }}</option>@endforeach</select>@if($errors->has('exercise'))<div class="text-danger">{{ $errors->first('exercise')}}</div>@endif</div></div><div class="form-group row"><label for="input2" class="col-sm-2 col-form-label">Pertanyaan</label><div class="col-sm-10"><textarea id="ckeditor" name="addMoreQuestion[0][question]" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>@if($errors->has('question'))<div class="text-danger">{{ $errors->first('question')}}</div>@endif</div></div><div class="form-group row"><label for="input2" class="col-sm-2 col-form-label">Option 1</label><div class="col-sm-10"><input name="addMoreQuestion[0][opt1]" type="text" class="form-control" id="input2" placeholder="Nama Exercise">@if($errors->has('opt1'))<div class="text-danger">{{ $errors->first('opt1')}}</div>@endif</div></div><div class="form-group row"><label for="input2" class="col-sm-2 col-form-label">Option 2</label><div class="col-sm-10"><input name="addMoreQuestion[0][opt2]" type="text" class="form-control" id="input2" placeholder="Deskripsi Exercise"> @if($errors->has('opt2'))<div class="text-danger">{{ $errors->first('opt2')}}</div>@endif</div></div><div class="form-group row"><label for="input2" class="col-sm-2 col-form-label">Option 3</label><div class="col-sm-10"><input name="opt3" type="text" class="form-control" id="input2" placeholder="Deskripsi Exercise">@if($errors->has('addMoreQuestion[0][opt3]'))<div class="text-danger">{{ $errors->first('opt3')}}</div>@endif</div></div><div class="form-group row"><label for="input2" class="col-sm-2 col-form-label">Option 4</label><div class="col-sm-10"><input name="addMoreQuestion[0][opt4]" type="text" class="form-control" id="input2" placeholder="Deskripsi Exercise">@if($errors->has('opt4'))<div class="text-danger">{{ $errors->first('opt4')}}</div>@endif</div></div><hr></div>
+
+/*
+     * This is For Create Question
+     *
+     */
+    public function CreateQuestion(Request $request)
+    {
+        $inputs = $request->all();
+
+        foreach ($inputs as $input)
+            {
+
+                Question::create(array(
+                    'exercise'=>$input['exercise'],
+                    'question'=>$input['question'],
+                    'opt1'=>$input['opt1'],
+                    'opt2'=>$input['opt2'],
+                    'opt3'=>$input['opt3'],
+                    'opt4'=>$input['opt4'],
+                ));
+            }
+
+        return back()->with('success','Soal Berhasil dikirim.');
+    }
