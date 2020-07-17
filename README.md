@@ -65,3 +65,9 @@ Thank you, Good Luck ... 😁
 # Export To PDF Feature 
 LaraELearn is using Laravel Snappy for export Materi/Theory to PDF,
 so for configuring LaraELearn for Laravel Snappy see ```https://github.com/barryvdh/laravel-snappy```
+
+# The Accounts on seeder:
+Admin Account - Username: Okemin, Password: password
+Teacher Account - Username: Teacher, Password: password
+Student Account - Username: Student, Password: password
+You can add new account from admin account.
