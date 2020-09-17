@@ -1,6 +1,10 @@
 # LaraELearn
 AdminLTE x Laravel E-Learning System Script
 
+# SORRY THIS REPOSITORY HAS BEEN DISCONTINUED
+So there is no more support for this project.
+And by the way this is my first project, so this project is very messy.
+
 ![Image of Yaktocat](https://github.com/Abdurozzaq/LaraELearn/blob/master/admin-screenshoot-1368x793.png)
 
 Features
